@@ -13,6 +13,12 @@
 ## Overview
 
 **personaLLM** is a fine-tuned language model pipeline that converts structured five-dimensional OCEAN personality trait vectors into coherent, empathetic, and human-readable personality narratives. Designed for deployment in resource-constrained environments — such as interactive public kiosks — the system achieves high semantic fidelity with a minimal computational footprint.
+<br><br>
+
+<img src="img/inference.jpg" alt="Evaluating and inducing Big Five personality traits — Jiang et al., 2023" width="800"/>
+<br><br>
+
+> _Background: Evaluating and inducing Big Five personality traits in LLMs via the Machine Personality Inventory (MPI) — Jiang et al., 2023_
 
 The model is built on **GPT-Neo-125M** (EleutherAI), fine-tuned on a custom synthetic dataset of 10,000+ curated trait-to-text pairs. It supports optional multilingual translation and text-to-speech synthesis, enabling a fully modular, real-time personality feedback pipeline.
 
@@ -47,12 +53,12 @@ A synthetic dataset was constructed from scratch, as no public dataset maps OCEA
 {
   "input": "Openness=0.9, Conscientiousness=0.3, Extraversion=0.2, Agreeableness=0.8, Neuroticism=0.6",
   "output": "You are highly imaginative and curious, often seeking new ideas and perspectives. You tend to resist rigid planning and prefer spontaneous action.
-            Social interactions may feel draining, and you often recharge best when alone. You are thoughtful and kind-hearted, often placing others' needs before your own.
-            You occasionally experience emotional fluctuations, but generally maintain self-awareness and control."
+    Social interactions may feel draining, and you often recharge best when alone. You are thoughtful and kind-hearted, often placing others' needs before your own.
+    You occasionally experience emotional fluctuations, but generally maintain self-awareness and control."
 }
 ```
 
-
+<br>
 
 ## Installation
 
