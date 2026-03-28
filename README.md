@@ -15,6 +15,12 @@
  
 <br>
 
+## ✦ Live Demo
+ 
+🔗 **[Try it on Streamlit Cloud →](https://personalm.streamlit.app/)**
+
+ <br>
+
 ## What it does
  
 PersonaLM takes you through 20 carefully selected questions from the IPIP Big Five framework — measuring Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism — and hands you back:
@@ -24,6 +30,33 @@ PersonaLM takes you through 20 carefully selected questions from the IPIP Big Fi
 - **Insight panels** — your top Strengths, Blind Spots, and Growth Areas computed directly from your scores
 - **A personalised narrative** — streamed word by word by a fine-tuned GPT-Neo-125M model, read aloud via the Kokoro TTS engine the moment it's ready
 
+<br>
+
+## Architecture
+ 
+```
+  User answers (20 Qs)
+        │
+        ▼
+  Trait Scoring Engine
+  (IPIP Big Five formula)
+        │
+        ├──► Archetype Card  (rule-based, dominant trait)
+        ├──► Radar Chart     (SVG, SMIL-animated)
+        ├──► Insight Panels  (rule-based, ranked traits)
+        │
+        ▼
+  Fine-tuned GPT-Neo-125M
+  (EleutherAI base → personality descriptions)
+        │
+        ▼
+  Kokoro TTS Engine
+  (text → WAV, autoplay)
+        │
+        ▼
+  Streamlit Frontend
+  (text streaming + simultaneous audio playback)
+```
 <br>
 
 ## Tech Stack
@@ -42,10 +75,11 @@ PersonaLM takes you through 20 carefully selected questions from the IPIP Big Fi
 ## Fine-tuning
  
 The core model is `EleutherAI/gpt-neo-125M`, fine-tuned on a custom dataset of structured personality descriptions keyed to Big Five trait score inputs in the format:
- 
+
 ```
-Input: Openness: 0.9, Conscientiousness: 0.3, Extraversion: 0.1, Agreeableness: 0.8, Neuroticism: 0.4
-Output: <personality description>
+Input: Openness: 0.9, Conscientiousness: 0.7, Extraversion: 0.1, Agreeableness: 0.8, Neuroticism: 0.4
+Output: You are extremely open to new experiences, creativity, and abstract ideas. You often seek novel, unconventional approaches and enjoy exploring the unknown.
+Your curiosity and imagination drive much of your thinking and behavior. You are highly organized and responsible...
 ```
  
 The fine-tuned model and tokenizer are hosted on Hugging Face Hub:
@@ -85,8 +119,11 @@ The app will open at `http://localhost:8501`.
 personaLM/
 ├── app.py                  # Main Streamlit application
 ├── pipeline.py             # Standalone inference pipeline (CLI)
+├── train.py                # LLM fine-tuning pipeline
 ├── requirements.txt
+├── packages.txt
 ├── assets/                 # Screenshots and demo GIFs for README
+├── data/                   # Dataset and data generation pipeline
 └── README.md
 ```
  
