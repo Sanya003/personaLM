@@ -1,94 +1,110 @@
-# personaLLM
+# personaLM 🧠
 
-> **LLM-driven personality description generation from structured OCEAN trait vectors**
+> *Some things about you were always true. We just put them into words. Personality, decoded.*
 
-[![Model on HuggingFace](https://img.shields.io/badge/🤗%20HuggingFace-personaLLM-yellow)](https://huggingface.co/SanyaAhmed/llm-personality-model)
+[![Model on HuggingFace](https://img.shields.io/badge/🤗%20HuggingFace-personaLM-yellow)](https://huggingface.co/SanyaAhmed/llm-personality-model)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-blue)](https://python.org)
 [![Model: GPT-Neo-125M](https://img.shields.io/badge/Model-GPT--Neo--125M-green)](https://huggingface.co/EleutherAI/gpt-neo-125m)
 [![Framework: HuggingFace Transformers](https://img.shields.io/badge/Framework-Transformers-orange)](https://huggingface.co/docs/transformers)
-
 <br>
 
 ## Overview
 
-**personaLLM** is a fine-tuned language model pipeline that converts structured five-dimensional OCEAN personality trait vectors into coherent, empathetic, and human-readable personality narratives. Designed for deployment in resource-constrained environments — such as interactive public kiosks — the system achieves high semantic fidelity with a minimal computational footprint.
-<br><br>
+**PersonaLM** is an AI-powered personality analysis web app built on a fine-tuned GPT-Neo language model. It administers a validated Big Five (IPIP) personality assessment, derives your trait scores, and generates a fully personalized narrative — complete with voice narration, an archetype card, and an animated radar chart — all in real time.
+ 
+<br>
 
-<img src="img/inference.jpg" alt="Evaluating and inducing Big Five personality traits — Jiang et al., 2023" width="800"/>
-<br><br>
-
-> _Background: Evaluating and inducing Big Five personality traits in LLMs via the Machine Personality Inventory (MPI) — Jiang et al., 2023_
-
-The model is built on **GPT-Neo-125M** (EleutherAI), fine-tuned on a custom synthetic dataset of 10,000+ curated trait-to-text pairs. It supports optional multilingual translation and text-to-speech synthesis, enabling a fully modular, real-time personality feedback pipeline.
-
+## What it does
+ 
+PersonaLM takes you through 20 carefully selected questions from the IPIP Big Five framework — measuring Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism — and hands you back:
+ 
+- **Your archetype** — one of five personality archetypes (The Visionary, The Architect, The Catalyst, The Empath, The Sentinel) derived from your dominant trait
+- **An animated radar chart** — all five dimensions visualised, drawn and scored live
+- **Insight panels** — your top Strengths, Blind Spots, and Growth Areas computed directly from your scores
+- **A personalised narrative** — streamed word by word by a fine-tuned GPT-Neo-125M model, read aloud via the Kokoro TTS engine the moment it's ready
 
 <br>
 
-## Key Results
-
-| Metric | Value |
+## Tech Stack
+ 
+| Layer | Technology |
 |---|---|
-| Final Evaluation Loss | **0.0471** |
-| Perplexity | **1.048** |
-| Mean SBERT Cosine Similarity | **0.99** |
-| Trait Coverage (all 5 OCEAN traits) | **100%** |
-| End-to-End Inference Time | **~45 seconds** |
-| Training Dataset Size | **10,000 samples** |
-| Total Training Runtime | **~8 hours 20 minutes** |
-
+| Frontend | Streamlit, custom CSS, SVG (SMIL animations) |
+| Language Model | GPT-Neo-125M (EleutherAI), fine-tuned on personality descriptions |
+| Training | Hugging Face `Trainer` API |
+| TTS | Kokoro TTS (`af_heart` voice) |
+| Audio | SoundFile, NumPy |
+| Deployment | Streamlit Cloud, Hugging Face Hub |
+ 
 <br>
-
-## Dataset
-
-A synthetic dataset was constructed from scratch, as no public dataset maps OCEAN vectors to narrative descriptions.
-
-- **Size:** 10,000 stratified samples drawn from a theoretical space of 161,051 unique trait combinations (11 levels × 5 traits)
-- **Format:** JSONL — each entry contains an `input` (flattened OCEAN vector string) and an `output` (personality paragraph)
-- **Design principle:** Template-driven generation with multiple phrasings per trait level, validated for fluency and semantic diversity
-- **Grounding:** Templates incorporate the **Johari Window** framework to produce descriptions that are empathetic, self-affirming, and reflectively constructive
-
-**Example:**
-```json
-{
-  "input": "Openness=0.9, Conscientiousness=0.3, Extraversion=0.2, Agreeableness=0.8, Neuroticism=0.6",
-  "output": "You are highly imaginative and curious, often seeking new ideas and perspectives. You tend to resist rigid planning and prefer spontaneous action.
-    Social interactions may feel draining, and you often recharge best when alone. You are thoughtful and kind-hearted, often placing others' needs before your own.
-    You occasionally experience emotional fluctuations, but generally maintain self-awareness and control."
-}
+ 
+## Fine-tuning
+ 
+The core model is `EleutherAI/gpt-neo-125M`, fine-tuned on a custom dataset of structured personality descriptions keyed to Big Five trait score inputs in the format:
+ 
 ```
-
+Input: Openness: 0.9, Conscientiousness: 0.3, Extraversion: 0.1, Agreeableness: 0.8, Neuroticism: 0.4
+Output: <personality description>
+```
+ 
+The fine-tuned model and tokenizer are hosted on Hugging Face Hub:
+🤗 **[llm-personality-model](https://huggingface.co/SanyaAhmed/llm-personality-model)**
+ 
 <br>
 
-## Installation
-
+## Getting Started
+ 
+### Prerequisites
+- Python 3.10+
+- pip
+ 
+### Installation
+ 
 ```bash
-git clone https://github.com/Sanya003/personaLLM.git
-cd personaLLM
+git clone https://github.com/Sanya003/personaLM.git
+cd personaLM
 pip install -r requirements.txt
 ```
-
-**Dependencies:**
+ 
+### Run locally
+ 
+```bash
+streamlit run app.py
 ```
-transformers>=4.38.0
-torch>=2.0.0
-datasets
-sentence-transformers
-googletrans==4.0.0rc1
-kokoro
-gtts
-fastapi
-uvicorn
-wandb
-```
-
+ 
+The app will open at `http://localhost:8501`.
+ 
+> **Note:** On first run, the model is downloaded from Hugging Face Hub and cached locally. This may take a minute depending on your connection.
+ 
 <br>
 
+## Project Structure
+ 
+```
+personaLM/
+├── app.py                  # Main Streamlit application
+├── pipeline.py             # Standalone inference pipeline (CLI)
+├── requirements.txt
+├── assets/                 # Screenshots and demo GIFs for README
+└── README.md
+```
+ 
+<br>
+
+## Acknowledgements
+ 
+- [EleutherAI](https://www.eleuther.ai/) for the GPT-Neo model family
+- [IPIP](https://ipip.ori.org/) for the open-access Big Five personality items
+- [Kokoro TTS](https://github.com/remsky/kokoro-onnx) for the voice synthesis engine
+- [Streamlit](https://streamlit.io/) for making ML apps this fast to build and ship
+ 
+<br>
 
 ## References
 
 - Black et al. (2021). *GPT-Neo: Large Scale Autoregressive Language Modeling*. EleutherAI.
-- Jiang et al. (2024). *PersonaLLM: Investigating the Ability of LLMs to Express Personality Traits*. arXiv:2305.02547.
+- Jiang et al. (2024). *personaLM: Investigating the Ability of LLMs to Express Personality Traits*. arXiv:2305.02547.
 - Reimers & Gurevych (2019). *Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks*. arXiv:1908.10084.
 - Luft & Ingham (1955). *The Johari Window, a Graphic Model of Interpersonal Awareness*.
 - Jiang et al. (2023). *Evaluating and Inducing Personality in Pre-Trained Language Models*. NeurIPS 2023.
@@ -96,9 +112,11 @@ wandb
 <br>
 
 ## License
-
-This project is licensed under the MIT License. See [LICENSE](https://opensource.org/licenses/MIT) for details.
+MIT License — see [`LICENSE`](https://opensource.org/licenses/MIT) for details.
 
 <br>
 
-<p align="center">Built with 🤍 using GPT-Neo · HuggingFace · Sentence-BERT · Kokoro TTS</p>
+
+<p align="center">
+  Built with curiosity, fine-tuned with intention. ✦
+</p>
