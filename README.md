@@ -2,6 +2,7 @@
 
 > *Some things about you were always true. We just put them into words. Personality, decoded.*
 
+[![Live App](https://img.shields.io/badge/App-personaLM-red)](https://personalm.streamlit.app/)
 [![Model on HuggingFace](https://img.shields.io/badge/🤗%20HuggingFace-personaLM-yellow)](https://huggingface.co/SanyaAhmed/llm-personality-model)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/Python-3.8%2B-blue)](https://python.org)
